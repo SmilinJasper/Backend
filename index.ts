@@ -31,8 +31,8 @@ let notes: Note[] = [
 ]
 
 const generateNewId = (notes: Note[]) => {
-  const newId = Math.max(...notes.map(note => Number(note.id)))
-  return String(newId + 1)
+  const currentId = notes.length == 0 ? 0 : Math.max(...notes.map(note => Number(note.id)))
+  return String(currentId + 1)
 }
 
 const app = express()
