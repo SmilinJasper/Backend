@@ -7,7 +7,7 @@ interface Note {
     important: boolean;
 }
 
-interface newNoteBody {
+interface NewNoteBody {
   content: string;
   important: boolean;
 }
@@ -59,7 +59,7 @@ app.delete('/api/notes/:id', (request: Request, response: Response) => {
   response.status(204).end()
 })
 
-app.post('/api/notes', (request: Request<{}, {}, newNoteBody>, response: Response) => {
+app.post('/api/notes', (request: Request<{}, {}, NewNoteBody>, response: Response) => {
 
   const newId: string = generateNewId(notes)
 
