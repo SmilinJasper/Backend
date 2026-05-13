@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 // import {response, request, type Request, type Response} from 'express'
 
 interface Note {
@@ -37,6 +38,16 @@ const generateNewId = (notes: Note[]) => {
 
 const app = express()
 app.use(express.json())
+
+morgan.token('body', (request: Request, response: Response) => {
+  
+  const hasBody = Object.keys(request.body || {}).length > 0
+  
+  return hasBody ? JSON.stringify(request.body) : ' '
+  
+})
+
+app.use(morgan(':url :method :status :res[content-length] - :response-time ms Body: :body'))
 
 app.get('/', (request: Request, response: Response) => {
     response.send('<h1>Hello World</h1>')
