@@ -40,10 +40,11 @@ const app = express()
 app.use(express.json())
 
 morgan.token('body', (request: Request, response: Response) => {
+
+  const requestBody = request.body
+  if(!requestBody || Object.keys(requestBody).length <= 0) return ' '
   
-  const hasBody = Object.keys(request.body || {}).length > 0
-  
-  return hasBody ? JSON.stringify(request.body) : ' '
+  return JSON.stringify(requestBody)
   
 })
 
