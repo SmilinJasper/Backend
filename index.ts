@@ -53,6 +53,8 @@ app.use(morgan(':url :method :status :res[content-length] - :response-time ms Bo
 
 app.use(cors())
 
+app.use(express.static('dist'))
+
 app.get('/', (request: Request, response: Response) => {
     response.send('<h1>Hello World</h1>')
 })
