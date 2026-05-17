@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')
 // import {response, request, type Request, type Response} from 'express'
 
 interface Note {
@@ -50,8 +49,6 @@ morgan.token('body', (request: Request, response: Response) => {
 })
 
 app.use(morgan(':url :method :status :res[content-length] - :response-time ms Body: :body'))
-
-app.use(cors())
 
 app.use(express.static('dist'))
 
