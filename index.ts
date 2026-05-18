@@ -97,5 +97,5 @@ app.post('/api/notes', (request: Request<{}, {}, NewNoteBody>, response: Respons
 
 const PORT: number = Number(process.env.PORT) || 3001
 app.listen(PORT, () => {
-console.log(`App listening on port ${PORT}`)
+  console.log(`App listening on port ${PORT}`)
 })
