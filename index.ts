@@ -1,8 +1,7 @@
-const express = require('express')
-const morgan = require('morgan')
-const mongoose = require('mongoose')
-const dns = require('node:dns')
-// import mongoose from "mongoose"
+import express from 'express'
+import morgan from 'morgan'
+import dns from 'node:dns'
+import mongoose from "mongoose"
 
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 
