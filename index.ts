@@ -3,7 +3,8 @@ import morgan from 'morgan'
 import mongoose from 'mongoose';
 import { connectToMongoDb } from './connectToMongoDb';
 
-connectToMongoDb(process.argv[2])
+const mongoPassword: string = process.argv[2]
+connectToMongoDb(mongoPassword)
 
 interface Note {
     id: string;
