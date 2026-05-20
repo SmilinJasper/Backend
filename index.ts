@@ -6,8 +6,8 @@ import { connectToMongoDb } from './connectToMongoDb';
 const mongoPassword: string = process.argv[2]
 connectToMongoDb(mongoPassword)
 
-interface Note {
-    id: string;
+interface INote {
+    id?: string;
     content: string;
     important: boolean;
 }
@@ -17,10 +17,10 @@ interface NewNoteBody {
   important: boolean;
 }
 
-const noteSchema = new mongoose.Schema<Note>({
+const noteSchema = new mongoose.Schema<INote>({
   content: {
-  type: String,
-  required: true
+    type: String,
+    required: true
   },
   important: {
     type: Boolean,
@@ -28,9 +28,9 @@ const noteSchema = new mongoose.Schema<Note>({
   }
 }) 
 
-const NoteModel = mongoose.model('Note', noteSchema)
+const NoteModel = mongoose.model('INote', noteSchema)
 
-let notes: Note[] = [
+let notes: INote[] = [
   {
     id: "1",
     content: "HTML is easy",
