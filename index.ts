@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const dns = require('node:dns')
+// import mongoose from "mongoose"
 
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 
@@ -14,7 +15,21 @@ const mongoPassword = process.argv[2]
 const mongoConnectionUrl = `mongodb+srv://notesUser:${mongoPassword}@notes.qcdamrh.mongodb.net/noteApp?appName=Notes`
 
 mongoose.connect(mongoConnectionUrl, {family: 4})
-// import {response, request, type Request, type Response} from 'express'
+
+const noteSchema = new mongoose.Schema<Note>({
+  id: {
+    type: String,
+    required: true
+  },
+  content: {
+  type: String,
+  required: true
+  },
+  important: {
+    type: Boolean,
+    required: true
+  }
+}) 
 
 interface Note {
     id: string;
