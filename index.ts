@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import dns from 'node:dns'
 import mongoose from "mongoose"
+import { Request, Response } from 'express'
 
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 
