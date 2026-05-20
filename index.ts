@@ -114,8 +114,8 @@ app.post('/api/notes', async (request: Request<{}, {}, NewNoteBody>, response: R
   })
 
   const newNote = new NoteModel({
-    content: content,
-    important: important
+    content,
+    important
   })
 
   try {
