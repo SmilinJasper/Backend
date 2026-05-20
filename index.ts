@@ -12,7 +12,7 @@ interface INote {
     important: boolean;
 }
 
-interface NewNoteBody {
+interface INewNoteBody {
   content: string;
   important: boolean;
 }
@@ -85,7 +85,7 @@ app.delete('/api/notes/:id', (request: Request, response: Response) => {
   response.status(204).end()
 })
 
-app.post('/api/notes', async (request: Request<{}, {}, NewNoteBody>, response: Response) => {
+app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: Response) => {
 
   const {content, important} = request.body
 
