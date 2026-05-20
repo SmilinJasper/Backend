@@ -16,12 +16,23 @@ mongoose.set('strictQuery', false)
 
 mongoose.connect(connectionUrl, {family: 4})
 
-const noteSchema = {
-    content: String,
-    important: Boolean
+interface INote {
+    content: string,
+    important: boolean
 }
 
-const Note = mongoose.model('Note', noteSchema)
+const noteSchema = new mongoose.Schema<INote>({
+    content: { 
+        type: String, 
+        required: true 
+    },
+    important: { 
+        type: Boolean, 
+        required: true 
+    }
+})
+
+const Note = mongoose.model<INote>('Note', noteSchema)
 
 const newNote = new Note({
     content: 'testy',
