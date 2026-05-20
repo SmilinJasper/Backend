@@ -1,9 +1,20 @@
 const express = require('express')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-// import {response, request, type Request, type Response} from 'express'
+const dns = require('node:dns')
 
-export {}
+dns.setServers(['8.8.8.8', '8.8.4.4'])
+
+if(process.argv.length < 3) {
+  console.log('Enter MongoDB password')
+  process.exit(1)
+}
+
+const mongoPassword = process.argv[2]
+const mongoConnectionUrl = `mongodb+srv://notesUser:${mongoPassword}@notes.qcdamrh.mongodb.net/noteApp?appName=Notes`
+
+mongoose.connect(mongoConnectionUrl, {family: 4})
+// import {response, request, type Request, type Response} from 'express'
 
 interface Note {
     id: string;
