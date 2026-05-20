@@ -3,6 +3,8 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 // import {response, request, type Request, type Response} from 'express'
 
+export {}
+
 interface Note {
     id: string;
     content: string;
