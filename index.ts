@@ -26,21 +26,6 @@ const connectToMongoDb = async (mongoPassword: string) => {
 
 connectToMongoDb(process.argv[2])
 
-const noteSchema = new mongoose.Schema<Note>({
-  id: {
-    type: String,
-    required: true
-  },
-  content: {
-  type: String,
-  required: true
-  },
-  important: {
-    type: Boolean,
-    required: true
-  }
-}) 
-
 interface Note {
     id: string;
     content: string;
@@ -51,6 +36,19 @@ interface NewNoteBody {
   content: string;
   important: boolean;
 }
+
+const noteSchema = new mongoose.Schema<Note>({
+  content: {
+  type: String,
+  required: true
+  },
+  important: {
+    type: Boolean,
+    required: true
+  }
+}) 
+
+const NoteModel = mongoose.model('Note', noteSchema)
 
 let notes: Note[] = [
   {
@@ -69,11 +67,6 @@ let notes: Note[] = [
     important: true
   }
 ]
-
-const generateNewId = (notes: Note[]) => {
-  const currentId = notes.length == 0 ? 0 : Math.max(...notes.map(note => Number(note.id)))
-  return String(currentId + 1)
-}
 
 const app = express()
 app.use(express.json())
@@ -112,25 +105,29 @@ app.delete('/api/notes/:id', (request: Request, response: Response) => {
   response.status(204).end()
 })
 
-app.post('/api/notes', (request: Request<{}, {}, NewNoteBody>, response: Response) => {
-
-  const newId: string = generateNewId(notes)
+app.post('/api/notes', async (request: Request<{}, {}, NewNoteBody>, response: Response) => {
 
   const {content, important} = request.body
 
-  if(!content || !important) return response.status(400).json({
-    'Error': 'Missing Content'
+  if(!content || important === undefined) return response.status(400).json({
+    'error': 'Missing Content'
   })
 
-  const newNote: Note = {
-    id: newId,
+  const newNote = new NoteModel({
     content: content,
     important: important
+  })
+
+  try {
+    await newNote.save()
+    console.log('New note saved')
+    response.status(201).json(newNote)
+  } catch(error) {
+    console.error(error)
+    response.status(500).json({
+      error: 'Failed to save note to database'
+    })
   }
-
-  notes = notes.concat(newNote)
-
-  response.status(201).json(newNote)
 
 })
 
