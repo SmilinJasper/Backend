@@ -1,20 +1,31 @@
-import express from 'express'
+import express, {Request, Response} from 'express'
 import morgan from 'morgan'
 import dns from 'node:dns'
 import mongoose from "mongoose"
-import { Request, Response } from 'express'
 
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 
-if(process.argv.length < 3) {
-  console.log('Enter MongoDB password')
-  process.exit(1)
+const connectToMongoDb = async (processArgs: string[], ) => {
+
+  if(processArgs.length < 3) {
+    console.error('Enter MongoDB password')
+    process.exit(1);
+  }
+
+  const mongoPassword = processArgs[2]
+  const mongoConnectionUrl = `mongodb+srv://notesUser:${mongoPassword}@notes.qcdamrh.mongodb.net/noteApp?appName=Notes`
+
+  try {
+    await mongoose.connect(mongoConnectionUrl, {family: 4})
+    console.log('Successfully connected to MongoDB')
+  } catch(error) {
+    console.error('Failed to connect to MongoDB', error)
+    process.exit(1)
+  }
+
 }
 
-const mongoPassword = process.argv[2]
-const mongoConnectionUrl = `mongodb+srv://notesUser:${mongoPassword}@notes.qcdamrh.mongodb.net/noteApp?appName=Notes`
-
-mongoose.connect(mongoConnectionUrl, {family: 4})
+connectToMongoDb(process.argv)
 
 const noteSchema = new mongoose.Schema<Note>({
   id: {
