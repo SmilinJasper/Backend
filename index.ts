@@ -5,14 +5,13 @@ import mongoose from "mongoose"
 
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 
-const connectToMongoDb = async (processArgs: string[], ) => {
+const connectToMongoDb = async (mongoPassword: string) => {
 
-  if(processArgs.length < 3) {
+  if(!mongoPassword) {
     console.error('Enter MongoDB password')
     process.exit(1);
   }
 
-  const mongoPassword = processArgs[2]
   const mongoConnectionUrl = `mongodb+srv://notesUser:${mongoPassword}@notes.qcdamrh.mongodb.net/noteApp?appName=Notes`
 
   try {
@@ -25,7 +24,7 @@ const connectToMongoDb = async (processArgs: string[], ) => {
 
 }
 
-connectToMongoDb(process.argv)
+connectToMongoDb(process.argv[2])
 
 const noteSchema = new mongoose.Schema<Note>({
   id: {
