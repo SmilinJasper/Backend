@@ -1,7 +1,7 @@
 import express, {Request, Response} from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose';
-import { connectToMongoDb } from './connectToMongoDb';
+import { connectToMongoDb } from './connectToMongoDb.ts';
 
 const mongoPassword: string = process.argv[2]
 connectToMongoDb(mongoPassword)
