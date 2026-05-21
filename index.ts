@@ -72,10 +72,16 @@ app.get('/api/notes/:id', async (request: Request, response: Response) => {
   response.status(404).end()
 })
 
-app.delete('/api/notes/:id', (request: Request, response: Response) => {
+app.delete('/api/notes/:id', async (request: Request, response: Response) => {
+  
   const id = request.params.id
-  notes = notes.filter(note => note.id !== id)
-  response.status(204).end()
+  const deletedNote = await NoteModel.findByIdAndDelete(id)
+  if(!deletedNote) return response.status(404).json('error: Note not found!')
+
+  response.status(200).json({
+    'Message': 'Note deleted successfully!',
+    'data': deletedNote})
+
 })
 
 app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: Response) => {
