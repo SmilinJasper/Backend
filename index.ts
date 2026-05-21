@@ -41,8 +41,6 @@ noteSchema.set('toJSON', {
 
 const NoteModel = mongoose.model('Note', noteSchema)
 
-let notes: INote[] = await NoteModel.find({})
-
 const app = express()
 app.use(express.json())
 app.use(express.static('dist'))
@@ -62,7 +60,8 @@ app.get('/', (request: Request, response: Response) => {
     response.send('<h1>Hello World</h1>')
 })
 
-app.get('/api/notes', (request: Request, response: Response) => {
+app.get('/api/notes', async (request: Request, response: Response) => {
+    const notes: INote[] = await NoteModel.find({})
     response.json(notes)
 })
 
