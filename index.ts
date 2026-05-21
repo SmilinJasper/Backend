@@ -66,21 +66,29 @@ app.get('/api/notes', async (request: Request, response: Response) => {
 })
 
 app.get('/api/notes/:id', async (request: Request, response: Response) => {
+  
   const id = request.params.id
-  const note = await NoteModel.findById(id)
-  if(!note) return response.status(404).json('error: Note not found!')
-  return response.json(note)
+
+  try {
+    const note = await NoteModel.findById(id)
+    if(!note) return response.status(404).json({'error': 'Note not found!'})
+    response.json(note)
+  } catch {
+    response.status(400).json({'error': 'Malformatted ID!'})
+  }
+
 })
 
 app.delete('/api/notes/:id', async (request: Request, response: Response) => {
   
   const id = request.params.id
   const deletedNote = await NoteModel.findByIdAndDelete(id)
-  if(!deletedNote) return response.status(404).json('error: Note not found!')
+  if(!deletedNote) return response.status(404).json({'error': 'Note not found!'})
 
   response.status(200).json({
     'Message': 'Note deleted successfully!',
-    'data': deletedNote})
+    'data': deletedNote
+  })
 
 })
 
