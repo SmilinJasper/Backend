@@ -34,7 +34,6 @@ const noteSchema = new mongoose.Schema<INote>({
 noteSchema.set('toJSON', {
   transform(document, returnedObject: any) {
     returnedObject.id = returnedObject._id
-
     delete returnedObject._id
     delete returnedObject.__v
   },
@@ -46,6 +45,7 @@ let notes: INote[] = await NoteModel.find({})
 
 const app = express()
 app.use(express.json())
+app.use(express.static('dist'))
 
 morgan.token('body', (request: Request, response: Response) => {
 
@@ -57,8 +57,6 @@ morgan.token('body', (request: Request, response: Response) => {
 })
 
 app.use(morgan(':url :method :status :res[content-length] - :response-time ms Body: :body'))
-
-app.use(express.static('dist'))
 
 app.get('/', (request: Request, response: Response) => {
     response.send('<h1>Hello World</h1>')
