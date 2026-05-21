@@ -57,8 +57,14 @@ app.get('/', (request: Request, response: Response) => {
 })
 
 app.get('/api/notes', async (request: Request, response: Response) => {
+  
+  try {
     const notes: INote[] = await NoteModel.find({})
     response.json(notes)
+  } catch {
+    response.status(500).json({'error': 'Failed to fetch notes from database'})
+  }
+
 })
 
 app.get('/api/notes/:id', async (request: Request, response: Response) => {
