@@ -18,6 +18,10 @@ interface INewNoteBody {
 }
 
 const noteSchema = new mongoose.Schema<INote>({
+  id: {
+    type: String,
+    required: false
+  },
   content: {
     type: String,
     required: true
@@ -28,25 +32,18 @@ const noteSchema = new mongoose.Schema<INote>({
   }
 }) 
 
-const NoteModel = mongoose.model('INote', noteSchema)
+noteSchema.set('toJSON', {
+  transform(document, returnedObject: any) {
+    returnedObject.id = returnedObject._id
 
-let notes: INote[] = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
+    delete returnedObject._id
+    delete returnedObject.__v
   },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
+})
+
+const NoteModel = mongoose.model('Note', noteSchema)
+
+let notes: INote[] = await NoteModel.find({})
 
 const app = express()
 app.use(express.json())
