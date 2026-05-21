@@ -1,16 +1,17 @@
 import mongoose from "mongoose"
 import dns from 'node:dns'
+import 'dotenv/config'
 
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 
-export const connectToMongoDb = async (mongoPassword: string) => {
+export const connectToMongoDb = async () => {
 
-  if(!mongoPassword) {
-    console.error('Enter MongoDB password')
-    process.exit(1);
+  const mongoConnectionUrl = process.env.MONGODB_URI
+
+  if(!mongoConnectionUrl) {
+    console.error('MONGODB_URI environment variable does not exist!')
+    process.exit(1)
   }
-
-  const mongoConnectionUrl = `mongodb+srv://notesUser:${mongoPassword}@notes.qcdamrh.mongodb.net/noteApp?appName=Notes`
 
   try {
     await mongoose.connect(mongoConnectionUrl, {family: 4})
