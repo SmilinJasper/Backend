@@ -65,9 +65,9 @@ app.get('/api/notes', async (request: Request, response: Response) => {
     response.json(notes)
 })
 
-app.get('/api/notes/:id', (request: Request, response: Response) => {
+app.get('/api/notes/:id', async (request: Request, response: Response) => {
   const id = request.params.id
-  const note = notes.find(note => note.id === id)
+  const note = await NoteModel.findById(id)
   if(note) return response.json(note)
   response.status(404).end()
 })
