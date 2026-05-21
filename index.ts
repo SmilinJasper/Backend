@@ -17,10 +17,6 @@ interface INewNoteBody {
 }
 
 const noteSchema = new mongoose.Schema<INote>({
-  id: {
-    type: String,
-    required: false
-  },
   content: {
     type: String,
     required: true
@@ -96,8 +92,6 @@ app.delete('/api/notes/:id', async (request: Request, response: Response) => {
   } catch {
     response.status(400).json({'error': 'Malformatted ID!'})
   }
-
-
 
 })
 
