@@ -68,8 +68,8 @@ app.get('/api/notes', async (request: Request, response: Response) => {
 app.get('/api/notes/:id', async (request: Request, response: Response) => {
   const id = request.params.id
   const note = await NoteModel.findById(id)
-  if(note) return response.json(note)
-  response.status(404).end()
+  if(!note) return response.status(404).json('error: Note not found!')
+  return response.json(note)
 })
 
 app.delete('/api/notes/:id', async (request: Request, response: Response) => {
