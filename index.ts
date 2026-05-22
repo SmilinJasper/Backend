@@ -35,7 +35,7 @@ noteSchema.set('toJSON', {
   },
 })
 
-const NoteModel = mongoose.model<INote>('Note', noteSchema)
+const Note = mongoose.model<INote>('Note', noteSchema)
 
 const app = express()
 app.use(express.json())
@@ -59,7 +59,7 @@ app.get('/', (request: Request, response: Response) => {
 app.get('/api/notes', async (request: Request, response: Response) => {
 
   try {
-    const notes: INote[] = await NoteModel.find({})
+    const notes: INote[] = await Note.find({})
     response.json(notes)
   } catch {
     response.status(500).json({'error': 'Failed to fetch notes from database'})
@@ -72,7 +72,7 @@ app.get('/api/notes/:id', async (request: Request, response: Response) => {
   const id = request.params.id
 
   try {
-    const note = await NoteModel.findById(id)
+    const note = await Note.findById(id)
     if(!note) return response.status(404).json({'error': 'Note not found!'})
     response.json(note)
   } catch {
@@ -87,7 +87,7 @@ app.delete('/api/notes/:id', async (request: Request, response: Response) => {
 
   try {
     
-    const deletedNote = await NoteModel.findByIdAndDelete(id)
+    const deletedNote = await Note.findByIdAndDelete(id)
     if(!deletedNote) return response.status(404).json({'error': 'Note not found!'})
     
       response.status(200).json({
@@ -109,7 +109,7 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
     'error': 'Missing Content'
   })
 
-  const newNote = new NoteModel({
+  const newNote = new Note({
     content,
     important
   })
