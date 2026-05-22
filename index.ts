@@ -3,13 +3,9 @@ import morgan from 'morgan'
 import mongoose from 'mongoose';
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
+import { INewNoteBody } from './types.ts';
 
 connectToMongoDb()
-
-interface INewNoteBody {
-  content: string;
-  important: boolean;
-}
 
 const app = express()
 app.use(express.json())
