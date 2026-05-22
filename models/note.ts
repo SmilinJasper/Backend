@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface INote {
+export interface INote {
     id?: string;
     content: string;
     important: boolean;

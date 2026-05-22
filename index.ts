@@ -2,15 +2,9 @@ import express, {type Request, type Response} from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose';
 import { connectToMongoDb } from './connectToMongoDb.ts';
-import { Note } from './models/note.ts'
+import { Note, type INote} from './models/note.ts'
 
 connectToMongoDb()
-
-interface INote {
-    id?: string;
-    content: string;
-    important: boolean;
-}
 
 interface INewNoteBody {
   content: string;
