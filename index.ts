@@ -2,6 +2,7 @@ import express, {type Request, type Response} from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose';
 import { connectToMongoDb } from './connectToMongoDb.ts';
+import { Note } from './models/note.ts'
 
 connectToMongoDb()
 
@@ -15,27 +16,6 @@ interface INewNoteBody {
   content: string;
   important: boolean;
 }
-
-const noteSchema = new mongoose.Schema<INote>({
-  content: {
-    type: String,
-    required: true
-  },
-  important: {
-    type: Boolean,
-    required: true
-  }
-}) 
-
-noteSchema.set('toJSON', {
-  transform(document, returnedObject: any) {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  },
-})
-
-const Note = mongoose.model<INote>('Note', noteSchema)
 
 const app = express()
 app.use(express.json())
