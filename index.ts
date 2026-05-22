@@ -3,7 +3,7 @@ import express, {type Request, type Response} from 'express'
 import morgan from 'morgan'
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
-import { INewNoteBody } from './types.ts';
+import { type INewNoteBody } from './types.ts';
 
 connectToMongoDb()
 
