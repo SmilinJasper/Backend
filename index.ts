@@ -32,7 +32,7 @@ app.get('/api/notes', async (request: Request, response: Response) => {
     const notes: INote[] = await Note.find({})
     response.json(notes)
   } catch(error) {
-    console.log(error)
+    console.error(error)
     response.status(500).json({'error': 'Failed to fetch notes from database'})
   }
 
@@ -47,7 +47,7 @@ app.get('/api/notes/:id', async (request: Request, response: Response) => {
     if(!note) return response.status(404).json({'error': 'Note not found!'})
     response.json(note)
   } catch(error) {
-    console.log(error)
+    console.error(error)
     response.status(400).json({'error': 'Malformatted ID!'})
   }
 
@@ -68,7 +68,7 @@ app.delete('/api/notes/:id', async (request: Request, response: Response) => {
     })
 
   } catch(error) {
-    console.log(error)
+    console.error(error)
     response.status(400).json({'error': 'Malformatted ID!'})
   }
 
