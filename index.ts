@@ -3,8 +3,9 @@ import express, { type Request, type Response, type NextFunction } from 'express
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
 import { type INewNoteBody } from './types.ts';
-import { errorHandler } from './middlewares/errorHandler.ts';
 import { requestLogger } from './middlewares/logger.ts'; 
+import { unknownEndpointHandler } from './middlewares/unknownEndpointHandler.ts';
+import { errorHandler } from './middlewares/errorHandler.ts';
 
 connectToMongoDb()
 
@@ -85,6 +86,7 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
 
 })
 
+app.use(unknownEndpointHandler)
 app.use(errorHandler)
 
 const PORT: number = Number(process.env.PORT)
