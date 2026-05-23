@@ -1,9 +1,10 @@
 import 'dotenv/config'
-import express, {type Request, type Response} from 'express'
+import express, { type Request, type Response, type NextFunction } from 'express'
 import morgan from 'morgan'
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
 import { type INewNoteBody } from './types.ts';
+import { errorHandler } from './errorHandler.ts';
 
 connectToMongoDb()
 
@@ -26,19 +27,18 @@ app.get('/', (request: Request, response: Response) => {
     response.send('<h1>Hello World</h1>')
 })
 
-app.get('/api/notes', async (request: Request, response: Response) => {
+app.get('/api/notes', async (request: Request, response: Response, next: NextFunction) => {
 
   try {
     const notes: INote[] = await Note.find({})
     response.json(notes)
   } catch(error) {
-    console.error(error)
-    response.status(500).json({'error': 'Failed to fetch notes from database'})
+    next(error)
   }
 
 })
 
-app.get('/api/notes/:id', async (request: Request, response: Response) => {
+app.get('/api/notes/:id', async (request: Request, response: Response, next: NextFunction) => {
   
   const id = request.params.id
 
@@ -47,13 +47,12 @@ app.get('/api/notes/:id', async (request: Request, response: Response) => {
     if(!note) return response.status(404).json({'error': 'Note not found!'})
     response.json(note)
   } catch(error) {
-    console.error(error)
-    response.status(400).json({'error': 'Malformatted ID!'})
+    next(error)
   }
 
 })
 
-app.delete('/api/notes/:id', async (request: Request, response: Response) => {
+app.delete('/api/notes/:id', async (request: Request, response: Response, next: NextFunction) => {
   
   const id = request.params.id
 
@@ -68,13 +67,12 @@ app.delete('/api/notes/:id', async (request: Request, response: Response) => {
     })
 
   } catch(error) {
-    console.error(error)
-    response.status(400).json({'error': 'Malformatted ID!'})
+    next(error)
   }
 
 })
 
-app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: Response) => {
+app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: Response, next:NextFunction) => {
 
   const {content, important} = request.body
 
@@ -92,13 +90,12 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
     console.log('New note saved')
     response.status(201).json(newNote)
   } catch(error) {
-    console.error(error)
-    response.status(500).json({
-      error: 'Failed to save note to database'
-    })
+    next(error)
   }
 
 })
+
+app.use(errorHandler)
 
 const PORT: number = Number(process.env.PORT)
 app.listen(PORT, () => {
