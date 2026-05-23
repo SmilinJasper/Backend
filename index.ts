@@ -1,27 +1,17 @@
 import 'dotenv/config'
 import express, { type Request, type Response, type NextFunction } from 'express'
-import morgan from 'morgan'
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
 import { type INewNoteBody } from './types.ts';
 import { errorHandler } from './middlewares/errorHandler.ts';
+import { requestLogger } from './middlewares/logger.ts'; 
 
 connectToMongoDb()
 
 const app = express()
 app.use(express.json())
 app.use(express.static('dist'))
-
-morgan.token('body', (request: Request, response: Response) => {
-
-  const requestBody = request.body
-  if(!requestBody || Object.keys(requestBody).length <= 0) return ' '
-  
-  return JSON.stringify(requestBody)
-  
-})
-
-app.use(morgan(':url :method :status :res[content-length] - :response-time ms Body: :body'))
+app.use(requestLogger)
 
 app.get('/', (request: Request, response: Response) => {
     response.send('<h1>Hello World</h1>')
