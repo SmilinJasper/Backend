@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
 import { type INewNoteBody } from './types.ts';
-import { errorHandler } from './errorHandler.ts';
+import { errorHandler } from './middlewares/errorHandler.ts';
 
 connectToMongoDb()
 
