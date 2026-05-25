@@ -86,6 +86,16 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
 
 })
 
+app.put('/api/notes/:id', (request: Request, response: Response, next: NextFunction) => {
+  const requestItemId = request.params.id
+  const {content, important} = request.body
+
+  Note.findByIdAndUpdate(requestItemId, {
+    content: content,
+    important: important
+  })
+})
+
 app.use(unknownEndpointHandler)
 app.use(errorHandler)
 
