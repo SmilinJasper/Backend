@@ -113,7 +113,7 @@ app.put('/api/notes/:id', async (request: Request, response: Response, next: Nex
 app.use(unknownEndpointHandler)
 app.use(errorHandler)
 
-const PORT: number = Number(process.env.PORT)
+const PORT: number = Number(process.env.PORT) || 3001
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`)
 })
