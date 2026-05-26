@@ -5,7 +5,7 @@ export const errorHandler = (error: any, request: Request, response: Response, n
     console.error(error)
 
     if(error.name === 'CastError') {
-        response.status(400).json({'Error': 'Request contains malformatted ID!'})
+        response.status(400).json({'error': 'Request contains malformatted ID!'})
     }
 
     if(error.name === 'ValidationError') {
