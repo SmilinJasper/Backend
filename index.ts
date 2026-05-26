@@ -86,14 +86,24 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
 
 })
 
-app.put('/api/notes/:id', (request: Request, response: Response, next: NextFunction) => {
+app.put('/api/notes/:id', async (request: Request, response: Response, next: NextFunction) => {
   const requestItemId = request.params.id
   const {content, important} = request.body
 
-  Note.findByIdAndUpdate(requestItemId, {
+  try {
+
+    const updatedNote = await Note.findByIdAndUpdate(requestItemId, {
     content: content,
     important: important
-  })
+    }, {new: true, runValidators: true})
+
+  console.log(`Edited data at ${requestItemId}`)
+  response.status(201).json(updatedNote)
+
+  } catch(error) {
+    next(error)
+  }
+
 })
 
 app.use(unknownEndpointHandler)
