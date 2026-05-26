@@ -53,7 +53,7 @@ app.delete('/api/notes/:id', async (request: Request, response: Response, next: 
     if(!deletedNote) return response.status(404).json({'error': 'Note not found!'})
     
       response.status(200).json({
-      'Message': 'Note deleted successfully!',
+      'message': 'Note deleted successfully!',
       'data': deletedNote
     })
 
