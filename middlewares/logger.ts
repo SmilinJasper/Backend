@@ -1,7 +1,7 @@
 import morgan from 'morgan'
 import type { Request, Response } from 'express'
 
-morgan.token('body', (request: Request, respone: Response) => {
+morgan.token('body', (request: Request, response: Response) => {
     const requestBody = request.body 
     if(!requestBody || Object.keys(requestBody).length == 0) return ' '
     return JSON.stringify(requestBody)
