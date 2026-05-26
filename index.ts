@@ -102,7 +102,7 @@ app.put('/api/notes/:id', async (request: Request, response: Response, next: Nex
     })
 
   console.log(`Edited data at ${requestItemId}`)
-  response.status(201).json(updatedNote)
+  response.status(200).json(updatedNote)
 
   } catch(error) {
     next(error)
