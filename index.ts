@@ -87,15 +87,19 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
 })
 
 app.put('/api/notes/:id', async (request: Request, response: Response, next: NextFunction) => {
+  
   const requestItemId = request.params.id
   const {content, important} = request.body
 
   try {
 
     const updatedNote = await Note.findByIdAndUpdate(requestItemId, {
-    content: content,
-    important: important
-    }, {new: true, runValidators: true})
+      content: content,
+      important: important
+    }, {
+      new: true, 
+      runValidators: true
+    })
 
   console.log(`Edited data at ${requestItemId}`)
   response.status(201).json(updatedNote)
