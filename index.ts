@@ -91,6 +91,10 @@ app.put('/api/notes/:id', async (request: Request, response: Response, next: Nex
   const requestItemId = request.params.id
   const {content, important} = request.body
 
+  if(!content || important === undefined) return response.status(400).json({
+    'error': 'Partial or missing content!'
+  })
+
   try {
 
     const updatedNote = await Note.findByIdAndUpdate(requestItemId, {
