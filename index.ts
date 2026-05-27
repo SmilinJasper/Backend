@@ -89,6 +89,11 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
 app.put('/api/notes/:id', async (request: Request, response: Response, next: NextFunction) => {
   
   const requestItemId = request.params.id
+
+  if(!Note.findById(requestItemId)) return response.status(404).json({
+    'error': 'Note with given ID not found!'
+  })
+
   const {content, important} = request.body
 
   if(!content || important === undefined) return response.status(400).json({
