@@ -90,10 +90,6 @@ app.put('/api/notes/:id', async (request: Request, response: Response, next: Nex
   
   const requestItemId = request.params.id
 
-  if(!Note.findById(requestItemId)) return response.status(404).json({
-    'error': 'Note with given ID not found!'
-  })
-
   const {content, important} = request.body
 
   if(!content || important === undefined) return response.status(400).json({
@@ -110,6 +106,9 @@ app.put('/api/notes/:id', async (request: Request, response: Response, next: Nex
       runValidators: true
     })
 
+    if(!updatedNote) return response.status(404).json({
+      'error': 'No note found at given ID!'
+    })
   console.log(`Edited data at ${requestItemId}`)
   response.status(200).json(updatedNote)
 
