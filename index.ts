@@ -98,19 +98,19 @@ app.put('/api/notes/:id', async (request: Request, response: Response, next: Nex
 
   try {
 
-    const updatedNote = await Note.findByIdAndUpdate(requestItemId, {
-      content: content,
-      important: important
-    }, {
-      new: true, 
-      runValidators: true
-    })
+    const note = await Note.findById(requestItemId)
 
-    if(!updatedNote) return response.status(404).json({
+    if(!note) return response.status(404).json({
       'error': 'No note found at given ID!'
     })
-  console.log(`Edited data at ${requestItemId}`)
-  response.status(200).json(updatedNote)
+
+    note.content = content
+    note.important = important
+
+    await note.save()
+
+    console.log(`Edited data at ${requestItemId}`)
+    response.status(200).json(note)
 
   } catch(error) {
     next(error)
