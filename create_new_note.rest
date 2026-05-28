@@ -5,9 +5,13 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-"content": "GET and POST are the most important methods of HTsTP protocol",
-"important": true
+"content": "testy",
+"important": false
 }
+
+###
+
+DELETE http://localhost:3001/api/notes/6a189456f38b1e32199b42a0
 
 ###
 PUT http://localhost:3001/api/notes/6a10c5458212ad6d403c9e1b
