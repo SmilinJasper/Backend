@@ -71,15 +71,25 @@ app.post('/api/notes', async (request: Request<{}, {}, INewNoteBody>, response: 
     'error': 'Missing Content'
   })
 
-  const newNote = new Note({
-    content,
-    important
-  })
-
   try {
+    
+    const existingNote = await Note.findOne({content: content})
+
+    if(existingNote) {
+      existingNote.important = important
+      await existingNote.save()
+      return response.status(200).json(existingNote)
+    }
+
+    const newNote = new Note({
+      content,
+      important
+    })
+
     await newNote.save()
     console.log('New note saved')
-    response.status(201).json(newNote)
+    return response.status(201).json(newNote)
+    
   } catch(error) {
     next(error)
   }
