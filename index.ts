@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express, { type Request, type Response, type NextFunction } from 'express'
+import cors from 'cors'
 import { connectToMongoDb } from './connectToMongoDb.ts';
 import { Note, type INote} from './models/note.ts'
 import { type INewNoteBody } from './types.ts';
@@ -10,6 +11,12 @@ import { errorHandler } from './middlewares/errorHandler.ts';
 connectToMongoDb()
 
 const app = express()
+
+const corsOptions = {
+  origin: 'http://localhost:5173'
+}
+
+if(process.env.NODE_ENV === 'development') app.use(cors(corsOptions))
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(requestLogger)
